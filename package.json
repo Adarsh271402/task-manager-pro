@@ -1,0 +1,15 @@
+{
+  "name": "task-manager-pro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Task Manager Pro - ASP.NET Core 8 API + React 18 SPA + SQL Server/SQLite",
+  "scripts": {
+    "start": "bash start.sh",
+    "dev": "bash start.sh",
+    "build:client": "cd client && npm install && npm run build",
+    "test": "python tests/test_api.py"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
