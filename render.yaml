@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: task-manager-pro
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: Database__Provider
+        value: Postgres
+      - key: ConnectionStrings__Postgres
+        sync: false
+      - key: Jwt__Key
+        generateValue: true
+      - key: Seed__DemoData
+        value: "false"
+      - key: Bootstrap__AdminEmail
+        sync: false
+      - key: Bootstrap__AdminPassword
+        sync: false

@@ -184,3 +184,22 @@ Real-time hub: `/hubs/tasks` (JWT via `?access_token=`).
 - Column names/colors are fully editable — rename "Week 1..4" to any workflow (To Do → Done).
 - The last board column (highest position) is treated as "completed" for dashboard metrics.
 - Ideas: task comments, file attachments, email notifications, per-project boards, dark/light toggle.
+
+## Free deployment: Render + Neon PostgreSQL
+
+The `render.yaml` Blueprint deploys the React frontend and .NET API together on Render's Free plan. Use a separate Neon Free PostgreSQL database so app restarts do not erase data. Free services have usage limits and may sleep when idle.
+
+1. Sign up at https://console.neon.tech using GitHub. Create a Free project with a new, empty database.
+2. Open Connect and choose the .NET/Npgsql connection string format. It must look like `Host=...;Database=neondb;Username=...;Password=...;SSL Mode=Require`. Do not paste a `postgresql://` URL into this setting.
+3. Open https://dashboard.render.com/select-repo?type=blueprint and select this repository. Keep the service on the Free plan.
+4. Enter the requested secrets directly in Render:
+   - `ConnectionStrings__Postgres`: the Npgsql connection string from Neon.
+   - `Bootstrap__AdminEmail`: your chosen admin email.
+   - `Bootstrap__AdminPassword`: a unique password of at least 12 characters.
+5. Deploy the Blueprint. Open the generated HTTPS URL and log in with the admin credentials above.
+
+Render generates a JWT signing key. Demo accounts and tasks are disabled for this deployment. Admin credentials are used only when the database has no users; changing these settings later does not change an existing account's password. Keep the signing key stable across redeployments.
+
+The PostgreSQL schema is created automatically for an empty database using EF Core EnsureCreated. Existing SQL Server migrations are not applied to PostgreSQL. Future schema changes require a PostgreSQL migration strategy. Your local SQLite records are not automatically copied to Neon.
+
+Never commit database connection strings, passwords, or deployment credentials to GitHub. A live PostgreSQL connection is required to verify the deployed database integration.

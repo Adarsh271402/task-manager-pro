@@ -18,6 +18,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     if (provider.Equals("Sqlite", StringComparison.OrdinalIgnoreCase))
         options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
+    else if (provider.Equals("Postgres", StringComparison.OrdinalIgnoreCase))
+        options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")
+            ?? throw new InvalidOperationException("ConnectionStrings:Postgres is required."));
     else
         options.UseSqlServer(
             builder.Configuration.GetConnectionString("SqlServer"),
@@ -105,12 +108,13 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    if (provider.Equals("Sqlite", StringComparison.OrdinalIgnoreCase))
+    if (provider.Equals("Sqlite", StringComparison.OrdinalIgnoreCase) ||
+        provider.Equals("Postgres", StringComparison.OrdinalIgnoreCase))
         db.Database.EnsureCreated();
     else
         db.Database.Migrate();
 
-    await DbSeeder.SeedAsync(db);
+    await DbSeeder.SeedAsync(db, builder.Configuration);
 }
 
 // ---- pipeline ------------------------------------------------------------
@@ -130,6 +134,7 @@ app.UseCors("spa");
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 app.MapControllers();
 app.MapHub<TaskHub>("/hubs/tasks");
 

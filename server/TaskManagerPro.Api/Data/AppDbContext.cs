@@ -36,6 +36,9 @@ public class AppDbContext : DbContext
             e.Property(t => t.Title).IsRequired().HasMaxLength(200);
             e.Property(t => t.Description).HasMaxLength(2000);
             e.Property(t => t.Priority).IsRequired().HasMaxLength(20);
+            // Due dates are calendar dates, rather than UTC instants.
+            if (Database.IsNpgsql())
+                e.Property(t => t.DueDate).HasColumnType("date");
             e.HasIndex(t => new { t.BoardColumnId, t.Position });
 
             e.HasOne(t => t.BoardColumn)

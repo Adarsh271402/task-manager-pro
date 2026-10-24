@@ -10,8 +10,34 @@ namespace TaskManagerPro.Api.Data;
 /// </summary>
 public static class DbSeeder
 {
-    public static async Task SeedAsync(AppDbContext db)
+    public static async Task SeedAsync(AppDbContext db, IConfiguration configuration)
     {
+        if (!configuration.GetValue("Seed:DemoData", true))
+        {
+            if (!await db.Users.AnyAsync())
+            {
+                var password = configuration["Bootstrap:AdminPassword"];
+                if (string.IsNullOrWhiteSpace(password) || password.Length < 12)
+                    throw new InvalidOperationException("Bootstrap:AdminPassword must contain at least 12 characters.");
+                db.Users.Add(new User
+                {
+                    FullName = "Administrator",
+                    Email = (configuration["Bootstrap:AdminEmail"] ?? "admin@taskmanager.pro").Trim().ToLowerInvariant(),
+                    PasswordHash = PasswordHasher.Hash(password), Role = "Admin", IsActive = true
+                });
+                await db.SaveChangesAsync();
+            }
+            if (!await db.BoardColumns.AnyAsync())
+            {
+                db.BoardColumns.AddRange(
+                    new BoardColumn { Name = "To Do", Color = "#6366f1", Position = 0 },
+                    new BoardColumn { Name = "In Progress", Color = "#a855f7", Position = 1 },
+                    new BoardColumn { Name = "Done", Color = "#22c55e", Position = 2 });
+                await db.SaveChangesAsync();
+            }
+            return;
+        }
+
         // ---- users ---------------------------------------------------------
         if (!await db.Users.AnyAsync())
         {
