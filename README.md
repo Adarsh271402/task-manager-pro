@@ -1,5 +1,9 @@
 # Task Manager Pro
 
+**Live application: [Open Task Manager Pro](https://task-manager-pro-p80i.onrender.com)**
+
+Anyone can open the website and register a member account. Admin access requires the administrator credentials configured for deployment. The free hosting service may take about a minute to wake up after inactivity.
+
 Full-stack task management application — **ASP.NET Core 8 Web API + React 18 + SQL Server**, with JWT authentication, role-based permissions and real-time board updates via SignalR.
 
 ![Stack](https://img.shields.io/badge/.NET-8.0-512bd4) ![React](https://img.shields.io/badge/React-18-61dafb) ![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-cc2927)
