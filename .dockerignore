@@ -1,0 +1,14 @@
+.git
+**/node_modules
+**/bin
+**/obj
+**/*.db
+**/*.db-shm
+**/*.db-wal
+**/*.tsbuildinfo
+**/.env
+**/.env.*
+**/*.publishsettings
+**/*.pfx
+**/*.p12
+deploy
