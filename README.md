@@ -4,9 +4,17 @@
 
 Anyone can open the website and register a member account. Admin access requires the administrator credentials configured for deployment. The free hosting service may take about a minute to wake up after inactivity.
 
-Full-stack task management application — **ASP.NET Core 8 Web API + React 18 + SQL Server**, with JWT authentication, role-based permissions and real-time board updates via SignalR.
+Full-stack task management application built with **ASP.NET Core 8, React 18 and TypeScript**, with JWT authentication, role-based permissions and real-time board updates via SignalR. Supports SQL Server, PostgreSQL and SQLite.
 
 ![Stack](https://img.shields.io/badge/.NET-8.0-512bd4) ![React](https://img.shields.io/badge/React-18-61dafb) ![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-cc2927)
+
+[Features](#features) · [Tech stack](#tech-stack) · [Quick start](#quick-start-no-sql-server-needed--sqlite-demo) · [API overview](#api-overview)
+
+## Preview
+
+![Task Manager Pro sign-in page with authentication and role overview](docs/images/preview.png)
+
+*Captured from the live application on 30 October 2026.*
 
 ## Features
 
@@ -34,9 +42,9 @@ Full-stack task management application — **ASP.NET Core 8 Web API + React 18 +
 | API | ASP.NET Core 8, attribute routing, Swagger/OpenAPI |
 | Auth | JWT bearer, PBKDF2 password hashing, role-based authorization policies |
 | Real-time | SignalR (WebSocket with SSE/LongPolling fallback), JWT via query-string handshake |
-| ORM | Entity Framework Core 8 — SQL Server provider (production) / SQLite provider (demo) |
+| ORM | Entity Framework Core 8 — SQL Server, PostgreSQL and SQLite providers |
 | Client | React 18 + TypeScript + Vite, Tailwind CSS, react-router v6, axios, @microsoft/signalr, lucide-react |
-| Database | SQL Server (T-SQL schema + indexes + FKs) or zero-setup SQLite for local demos |
+| Database | SQL Server (T-SQL schema + indexes + FKs), PostgreSQL for the Render blueprint, or SQLite for local demos |
 
 ## Project structure
 
@@ -104,7 +112,9 @@ The SQLite provider creates and seeds the database automatically on first run.
 
 3. Run: `dotnet run` (provider defaults to `SqlServer`).
 
-### Seed accounts (created automatically on first run)
+### Local demo seed accounts
+
+These accounts are for the seeded local demo. The Render blueprint disables demo seeding and uses configured bootstrap administrator credentials.
 
 | Role | Email | Password |
 |---|---|---|
